@@ -4,8 +4,12 @@
   "main": "index.js",
   "author": "antoniocesar7 <antoniocesarfernandes@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev":"ts-node-dev src/server.ts"
+  },
   "devDependencies": {
     "@types/express": "^4.17.18",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
