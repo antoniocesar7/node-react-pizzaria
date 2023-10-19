@@ -1,3 +1,5 @@
+import prismaClient from "../../prisma";
+
 interface UserRequest{
     name:string;
     email:string;
@@ -7,9 +9,36 @@ interface UserRequest{
 class CreateUserService{
     async execute({name,email,password}:UserRequest){
         
-        console.log(name);
+        //verificar se ele mandou o email
+        if(!email){
+            throw new Error("Email incorrect");
+        }
 
-        return { name:name}
+        //verificar se o email está cadastrado na plataforma
+        const userAlreadyExists = await prismaClient.user.findFirst({
+            where:{
+                email:email
+            }
+        })
+
+        if(userAlreadyExists){
+            throw new Error("User already Exists");
+        }
+
+        const user = await prismaClient.user.create({
+            data:{
+                name:name,
+                email:email,
+                password:password
+            },
+            select:{
+                id:true,
+                email:true,
+                name:true
+            }
+        });
+
+        return user;
     }
 }
 
